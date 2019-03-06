@@ -59,6 +59,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.catrobat.catroid.utils.StatusBarNotificationManager.EXTRA_PROJECT_NAME;
+
 public class MainMenuFragment extends Fragment implements
 		ButtonAdapter.OnItemClickListener,
 		ProjectLoadTask.ProjectLoadListener {
@@ -132,8 +134,9 @@ public class MainMenuFragment extends Fragment implements
 		adapter.items.get(0).subtitle = Utils.getCurrentProjectName(getActivity());
 		adapter.notifyDataSetChanged();
 
-		String projectName = getActivity().getIntent().getStringExtra(StatusBarNotificationManager.EXTRA_PROJECT_NAME);
+		String projectName = getActivity().getIntent().getStringExtra(EXTRA_PROJECT_NAME);
 		if (projectName != null) {
+			getActivity().getIntent().removeExtra(EXTRA_PROJECT_NAME);
 			loadDownloadedProject(projectName);
 		}
 	}

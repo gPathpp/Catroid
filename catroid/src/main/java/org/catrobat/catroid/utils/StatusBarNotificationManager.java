@@ -362,7 +362,7 @@ public final class StatusBarNotificationManager {
 		}
 	}
 
-	private void createNotificationChannel(Context context) {
+	public void createNotificationChannel(Context context) {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 			CharSequence name = context.getResources().getString(R.string.app_name);
 			String description = context.getResources().getString(R.string.channel_description, name);

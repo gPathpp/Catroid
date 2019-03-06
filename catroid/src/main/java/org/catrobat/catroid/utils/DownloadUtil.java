@@ -25,6 +25,7 @@ package org.catrobat.catroid.utils;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
@@ -104,8 +105,8 @@ public final class DownloadUtil {
 		activity.startService(downloadIntent);
 	}
 
-	public void startDownload(Context context, String url, String programName, boolean renameProject) {
-		final String programNameKey = programName.toLowerCase(Locale.getDefault());
+	public void startDownload(Context context, String url, String projectName, boolean renameProject) {
+		final String programNameKey = projectName.toLowerCase(Locale.getDefault());
 		programDownloadQueue.add(programNameKey);
 
 		if (programDownloadCallback != null) {
@@ -113,13 +114,17 @@ public final class DownloadUtil {
 		}
 		Intent downloadIntent = new Intent(context, ProjectDownloadService.class);
 		downloadIntent.putExtra(ProjectDownloadService.RECEIVER_TAG, new DownloadProjectReceiver(new Handler()));
-		downloadIntent.putExtra(ProjectDownloadService.DOWNLOAD_NAME_TAG, programName);
+		downloadIntent.putExtra(ProjectDownloadService.DOWNLOAD_NAME_TAG, projectName);
 		downloadIntent.putExtra(ProjectDownloadService.URL_TAG, url);
 		downloadIntent.putExtra(ProjectDownloadService.RENAME_AFTER_DOWNLOAD, renameProject);
-		StatusBarNotificationManager manager = StatusBarNotificationManager.getInstance();
-		int notificationId = manager.createDownloadNotification(context, programName);
-		downloadIntent.putExtra(ProjectDownloadService.ID_TAG, notificationId);
+
 		context.startService(downloadIntent);
+
+//		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//			context.startForegroundService(downloadIntent);
+//		} else {
+			context.startService(downloadIntent);
+//		}
 	}
 
 	public void downloadFinished(String programName, String url) {

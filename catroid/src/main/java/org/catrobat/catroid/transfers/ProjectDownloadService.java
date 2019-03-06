@@ -23,6 +23,7 @@
 package org.catrobat.catroid.transfers;
 
 import android.app.IntentService;
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.ResultReceiver;
@@ -36,6 +37,7 @@ import org.catrobat.catroid.io.XstreamSerializer;
 import org.catrobat.catroid.io.ZipArchiver;
 import org.catrobat.catroid.utils.DownloadUtil;
 import org.catrobat.catroid.utils.PathBuilder;
+import org.catrobat.catroid.utils.StatusBarNotificationManager;
 import org.catrobat.catroid.utils.ToastUtil;
 import org.catrobat.catroid.web.ServerCalls;
 import org.catrobat.catroid.web.WebconnectionException;
@@ -53,7 +55,6 @@ public class ProjectDownloadService extends IntentService {
 	public static final String RECEIVER_TAG = "receiver";
 	public static final String DOWNLOAD_NAME_TAG = "downloadName";
 	public static final String URL_TAG = "url";
-	public static final String ID_TAG = "notificationId";
 	public static final String RENAME_AFTER_DOWNLOAD = "renameAfterDownload";
 
 	private static final String DOWNLOAD_FILE_NAME = "down" + Constants.CATROBAT_EXTENSION;
@@ -76,7 +77,10 @@ public class ProjectDownloadService extends IntentService {
 		String projectName = intent.getStringExtra(DOWNLOAD_NAME_TAG);
 		String zipFileString = new File(new File(CACHE_DIR, TMP_DIR_NAME), DOWNLOAD_FILE_NAME).getAbsolutePath();
 		String url = intent.getStringExtra(URL_TAG);
-		Integer notificationId = intent.getIntExtra(ID_TAG, -1);
+
+		StatusBarNotificationManager manager = StatusBarNotificationManager.getInstance();
+		int notificationId = manager.createDownloadNotification(getApplicationContext(), projectName);
+		startForeground(20, StatusBarNotificationManager.getInstance().showOrUpdateNotification(notificationId, 0));
 
 		receiver = intent.getParcelableExtra(RECEIVER_TAG);
 		try {
