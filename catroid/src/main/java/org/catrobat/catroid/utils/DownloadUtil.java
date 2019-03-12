@@ -120,11 +120,11 @@ public final class DownloadUtil {
 
 		context.startService(downloadIntent);
 
-//		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//			context.startForegroundService(downloadIntent);
-//		} else {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+			context.startForegroundService(downloadIntent);
+		} else {
 			context.startService(downloadIntent);
-//		}
+		}
 	}
 
 	public void downloadFinished(String programName, String url) {

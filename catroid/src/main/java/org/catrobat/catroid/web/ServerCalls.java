@@ -25,6 +25,7 @@ package org.catrobat.catroid.web;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.Handler;
 import android.os.ResultReceiver;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -42,6 +43,7 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
 
+import org.catrobat.catroid.R;
 import org.catrobat.catroid.common.Constants;
 import org.catrobat.catroid.common.FlavoredConstants;
 import org.catrobat.catroid.common.ScratchProgramData;
@@ -69,6 +71,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.Callable;
 
 import okio.BufferedSink;
 import okio.Okio;
@@ -468,11 +471,12 @@ public final class ServerCalls implements ScratchDataFetcher {
 	}
 
 	public void downloadProject(final String url, final String filePath, final String programName,
-			final ResultReceiver receiver, final int notificationId) throws IOException, WebconnectionException {
+			final ResultReceiver receiver, final int notificationId, DownloadCallback callback) {
 
 		File file = new File(filePath);
 		if (!(file.getParentFile().mkdirs() || file.getParentFile().isDirectory())) {
-			throw new IOException("Directory not created");
+			callback.onError(0, R.string.error_project_download);
+			Log.e(TAG, "Directory not created");
 		}
 
 		Request request = new Request.Builder()
@@ -512,8 +516,10 @@ public final class ServerCalls implements ScratchDataFetcher {
 			bufferedSink.writeAll(response.body().source());
 			bufferedSink.close();
 		} catch (IOException e) {
-			throw new WebconnectionException(WebconnectionException.ERROR_NETWORK, Log.getStackTraceString(e));
+			callback.onError(0, R.string.error_project_download);
+			Log.e(TAG, Log.getStackTraceString(e));
 		}
+		callback.onSuccess();
 	}
 
 	public void downloadMedia(final String url, final String filePath, final ResultReceiver receiver)
@@ -1044,4 +1050,10 @@ public final class ServerCalls implements ScratchDataFetcher {
 		String answer;
 		String token;
 	}
+
+	public interface DownloadCallback {
+		void onSuccess();
+		void onError(int statusCode, int errorMessageId);
+	}
+
 }

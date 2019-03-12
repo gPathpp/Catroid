@@ -73,38 +73,46 @@ public class ProjectDownloadService extends IntentService {
 	}
 
 	@Override
-	protected void onHandleIntent(Intent intent) {
-		String projectName = intent.getStringExtra(DOWNLOAD_NAME_TAG);
-		String zipFileString = new File(new File(CACHE_DIR, TMP_DIR_NAME), DOWNLOAD_FILE_NAME).getAbsolutePath();
-		String url = intent.getStringExtra(URL_TAG);
+	protected void onHandleIntent(final Intent intent) {
+		final String projectName = intent.getStringExtra(DOWNLOAD_NAME_TAG);
+		final String zipFileString = new File(new File(CACHE_DIR, TMP_DIR_NAME), DOWNLOAD_FILE_NAME).getAbsolutePath();
+		final String url = intent.getStringExtra(URL_TAG);
 
 		StatusBarNotificationManager manager = StatusBarNotificationManager.getInstance();
 		int notificationId = manager.createDownloadNotification(getApplicationContext(), projectName);
-		startForeground(20, StatusBarNotificationManager.getInstance().showOrUpdateNotification(notificationId, 0));
+		startForeground(notificationId, StatusBarNotificationManager.getInstance().showOrUpdateNotification(notificationId, 0));
 
 		receiver = intent.getParcelableExtra(RECEIVER_TAG);
-		try {
-			ServerCalls.getInstance().downloadProject(url, zipFileString, projectName, receiver, notificationId);
-			new ZipArchiver().unzip(new File(zipFileString), new File(PathBuilder.buildProjectPath(projectName)));
 
-			boolean renameProject = intent.getBooleanExtra(RENAME_AFTER_DOWNLOAD, false);
-			if (renameProject) {
-				Project projectTBRenamed = XstreamSerializer.getInstance().loadProject(projectName, getBaseContext());
-				if (projectTBRenamed != null) {
-					projectTBRenamed.setName(projectName);
-					XstreamSerializer.getInstance().saveProject(projectTBRenamed);
+		ServerCalls.getInstance().downloadProject(url, zipFileString, projectName, receiver, notificationId, new
+				ServerCalls
+				.DownloadCallback() {
+			@Override
+			public void onSuccess() {
+				try {
+					new ZipArchiver().unzip(new File(zipFileString), new File(PathBuilder.buildProjectPath(projectName)));
+					boolean renameProject = intent.getBooleanExtra(RENAME_AFTER_DOWNLOAD, false);
+					if (renameProject) {
+						Project projectTBRenamed = XstreamSerializer.getInstance().loadProject(projectName, getBaseContext());
+						if (projectTBRenamed != null) {
+							projectTBRenamed.setName(projectName);
+							XstreamSerializer.getInstance().saveProject(projectTBRenamed);
+						}
+					}
+					XstreamSerializer.getInstance().updateCodeFileOnDownload(projectName);
+
+					DownloadUtil.getInstance().downloadFinished(projectName, url);
+					showToast(R.string.notification_download_finished, false);
+				} catch (Exception e) {
+					onError(0, R.string.error_project_download);
 				}
 			}
 
-			XstreamSerializer.getInstance().updateCodeFileOnDownload(projectName);
-		} catch (LoadingProjectException | IOException | WebconnectionException e) {
-			showToast(R.string.error_project_download, true);
-			Log.e(TAG, Log.getStackTraceString(e));
-		} finally {
-			DownloadUtil.getInstance().downloadFinished(projectName, url);
-		}
-
-		showToast(R.string.notification_download_finished, false);
+			@Override
+			public void onError(int statusCode, int errorMessageId) {
+				showToast(errorMessageId, true);
+			}
+		});
 	}
 
 	private void showToast(final int messageId, boolean error) {
