@@ -25,6 +25,7 @@ package org.catrobat.catroid.content.bricks;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
 import android.view.View;
 
 import org.catrobat.catroid.ProjectManager;
@@ -51,6 +52,11 @@ public class GoToBrick extends BrickBaseType implements BrickSpinner.OnItemSelec
 
 	public GoToBrick(Sprite destinationSprite) {
 		this.destinationSprite = destinationSprite;
+	}
+
+	@VisibleForTesting
+	public GoToBrick(int spinnerSelection) {
+		this.spinnerSelection = spinnerSelection;
 	}
 
 	@Override

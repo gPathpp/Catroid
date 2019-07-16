@@ -57,6 +57,10 @@ public class ReadVariableFromDeviceBrick extends BrickBaseType implements BrickS
 	public ReadVariableFromDeviceBrick() {
 	}
 
+	public ReadVariableFromDeviceBrick(UserVariable userVariable) {
+		this.userVariable = userVariable;
+	}
+
 	@Override
 	public View getView(Context context) {
 		super.getView(context);

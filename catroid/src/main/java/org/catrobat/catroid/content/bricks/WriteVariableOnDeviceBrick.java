@@ -56,6 +56,10 @@ public class WriteVariableOnDeviceBrick extends BrickBaseType implements BrickSp
 	public WriteVariableOnDeviceBrick() {
 	}
 
+	public WriteVariableOnDeviceBrick(UserVariable userVariable) {
+		this.userVariable = userVariable;
+	}
+
 	@Override
 	public View getView(Context context) {
 		super.getView(context);
