@@ -145,7 +145,7 @@ public class FormulaEditorEditTextTest {
 				.perform(click());
 
 		onToast(withText(R.string.formula_editor_changes_discarded))
-				.check(matches(isDisplayed()));
+				.check(matches(isDisplayed())).;
 		onBrickAtPosition(1)
 				.checkShowsText("10 ");
 		onView(isRoot()).perform(CustomActions.wait(3000));

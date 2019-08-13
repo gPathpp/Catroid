@@ -580,37 +580,32 @@ public class FormulaEditorFragment extends Fragment implements ViewTreeObserver.
 		exitFormulaEditorFragment();
 	}
 
-	private void exitFormulaEditorFragment() {
+	@VisibleForTesting
+	public AlertDialog exitFormulaEditorFragment() {
 		if (hasFormulaBeenChanged || formulaEditorEditText.hasChanges()) {
 			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 			builder.setTitle(R.string.formula_editor_discard_changes_dialog_title)
 					.setMessage(R.string.formula_editor_discard_changes_dialog_message)
-					.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							Map<Brick.BrickField, InternFormulaState> initialStates = formulaEditorEditText
-									.getHistory().getInitialStates();
-							restoreInitialStates(initialStates);
-							ToastUtil.showError(getActivity(), R.string.formula_editor_changes_discarded);
+					.setNegativeButton(R.string.no, (dialog, which) -> {
+						Map<Brick.BrickField, InternFormulaState> initialStates = formulaEditorEditText
+								.getHistory().getInitialStates();
+						restoreInitialStates(initialStates);
+						ToastUtil.showError(getActivity(), R.string.formula_editor_changes_discarded);
+						onUserDismiss();
+					})
+					.setPositiveButton(R.string.yes, (dialog, which) -> {
+						if (saveFormulaIfPossible()) {
+							ToastUtil.showSuccess(getActivity(), R.string.formula_editor_changes_saved);
+							hasFormulaBeenChanged = false;
 							onUserDismiss();
 						}
-					})
-					.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							if (saveFormulaIfPossible()) {
-								ToastUtil.showSuccess(getActivity(), R.string.formula_editor_changes_saved);
-								hasFormulaBeenChanged = false;
-								onUserDismiss();
-							}
-						}
-					})
-					.create()
-					.show();
+					});
+			AlertDialog dialog = builder.create();
+			dialog.show();
+			return dialog;
 		} else {
 			onUserDismiss();
+			return null;
 		}
 	}
 

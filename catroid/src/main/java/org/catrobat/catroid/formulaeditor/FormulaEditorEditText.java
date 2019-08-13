@@ -26,6 +26,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.support.annotation.VisibleForTesting;
 import android.text.Layout;
 import android.text.Spannable;
 import android.text.style.BackgroundColorSpan;
@@ -51,7 +52,9 @@ public class FormulaEditorEditText extends EditText implements OnTouchListener {
 	private Context context;
 	private Paint paint = new Paint();
 
-	final GestureDetector gestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
+	@VisibleForTesting
+	public final GestureDetector gestureDetector = new GestureDetector(context,
+			new GestureDetector.SimpleOnGestureListener() {
 		@Override
 		public boolean onDoubleTap(MotionEvent event) {
 			internFormula.setCursorAndSelection(absoluteCursorPosition, true);
