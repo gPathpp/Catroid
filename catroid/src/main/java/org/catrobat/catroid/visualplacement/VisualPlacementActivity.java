@@ -156,13 +156,13 @@ public class VisualPlacementActivity extends BaseCastActivity implements View.On
 
 		FrameLayout frameLayout = findViewById(R.id.frame_container);
 
-		int screenWidth = ScreenValues.SCREEN_WIDTH;
-		int screenHeight = ScreenValues.SCREEN_HEIGHT;
+		int screenWidth = ScreenValues.Companion.getSCREEN_WIDTH();
+		int screenHeight = ScreenValues.Companion.getSCREEN_HEIGHT();
 		int virtualScreenWidth = currentProject.getXmlHeader().virtualScreenWidth;
 		int virtualScreenHeight = currentProject.getXmlHeader().virtualScreenHeight;
 
 		float aspectRatio = (float) virtualScreenWidth / (float) virtualScreenHeight;
-		float screenAspectRatio = ScreenValues.getAspectRatio();
+		float screenAspectRatio = ScreenValues.Companion.getAspectRatio();
 
 		float scale;
 		float ratioHeight = (float) screenHeight / (float) virtualScreenHeight;

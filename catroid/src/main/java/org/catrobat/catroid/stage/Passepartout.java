@@ -28,6 +28,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
+import org.catrobat.catroid.common.ScreenValues;
+
 public class Passepartout extends Actor {
 
 	private float virtualScreenWidth;
@@ -39,11 +41,13 @@ public class Passepartout extends Actor {
 
 	private Texture texture;
 
-	Passepartout(int screenWidth, int screenHeight, int screenViewPortWidth, int screenViewPortHeight,
-			float virtualScreenWidth, float virtualScreenHeight) {
-
+	Passepartout(ScreenValues screenValues, float virtualScreenWidth, float virtualScreenHeight) {
 		this.virtualScreenWidth = virtualScreenWidth;
 		this.virtualScreenHeight = virtualScreenHeight;
+		int screenWidth = ScreenValues.Companion.getSCREEN_WIDTH();
+		int screenHeight = ScreenValues.Companion.getSCREEN_HEIGHT();
+		int screenViewPortHeight = screenValues.getMaxViewPortHeight();
+		int screenViewPortWidth = screenValues.getMaxViewPortWidth();
 
 		passepartoutHeight = ((screenHeight / (screenViewPortHeight / virtualScreenHeight)) - virtualScreenHeight) / 2f;
 		passepartoutWidth = ((screenWidth / (screenViewPortWidth / virtualScreenWidth)) - virtualScreenWidth) / 2f;

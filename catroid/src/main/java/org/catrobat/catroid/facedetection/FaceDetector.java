@@ -95,7 +95,7 @@ public abstract class FaceDetector {
 	}
 
 	Point getRelationForFacePosition() {
-		return new Point(-ScreenValues.SCREEN_WIDTH, -ScreenValues.SCREEN_HEIGHT);
+		return new Point(-ScreenValues.Companion.getSCREEN_WIDTH(), -ScreenValues.Companion.getSCREEN_HEIGHT());
 	}
 
 	@VisibleForTesting

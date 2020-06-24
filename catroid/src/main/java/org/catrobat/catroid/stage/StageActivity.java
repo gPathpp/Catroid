@@ -57,7 +57,6 @@ import org.catrobat.catroid.R;
 import org.catrobat.catroid.bluetooth.base.BluetoothDeviceService;
 import org.catrobat.catroid.common.CatroidService;
 import org.catrobat.catroid.common.Constants;
-import org.catrobat.catroid.common.ScreenValues;
 import org.catrobat.catroid.common.ServiceProvider;
 import org.catrobat.catroid.content.Scene;
 import org.catrobat.catroid.content.actions.AskAction;
@@ -75,7 +74,6 @@ import org.catrobat.catroid.ui.runtimepermissions.PermissionHandlingActivity;
 import org.catrobat.catroid.ui.runtimepermissions.PermissionRequestActivityExtension;
 import org.catrobat.catroid.ui.runtimepermissions.RequiresPermissionTask;
 import org.catrobat.catroid.utils.FlashUtil;
-import org.catrobat.catroid.utils.ScreenValueHandler;
 import org.catrobat.catroid.utils.ToastUtil;
 import org.catrobat.catroid.utils.VibrationUtil;
 
@@ -110,7 +108,6 @@ public class StageActivity extends AndroidApplication implements PermissionHandl
 	StageDialog stageDialog;
 	private AlertDialog askDialog;
 	private AlertDialog permissionDialog;
-	private boolean resizePossible;
 
 	static int numberOfSpritesCloned;
 
@@ -340,64 +337,6 @@ public class StageActivity extends AndroidApplication implements PermissionHandl
 		}
 		success = JumpingSumoInitializer.getInstance().disconnect();
 		return success;
-	}
-
-	public boolean getResizePossible() {
-		return resizePossible;
-	}
-
-	void calculateScreenSizes() {
-		ScreenValueHandler.updateScreenWidthAndHeight(getContext());
-		int virtualScreenWidth = ProjectManager.getInstance().getCurrentProject().getXmlHeader().virtualScreenWidth;
-		int virtualScreenHeight = ProjectManager.getInstance().getCurrentProject().getXmlHeader().virtualScreenHeight;
-
-		if (virtualScreenHeight > virtualScreenWidth && isInLandscapeMode()
-				|| virtualScreenHeight < virtualScreenWidth && isInPortraitMode()) {
-			swapWidthAndHeigth();
-		}
-
-		float aspectRatio = (float) virtualScreenWidth / (float) virtualScreenHeight;
-		float screenAspectRatio = ScreenValues.getAspectRatio();
-
-		if ((virtualScreenWidth == ScreenValues.SCREEN_WIDTH && virtualScreenHeight == ScreenValues.SCREEN_HEIGHT)
-				|| Float.compare(screenAspectRatio, aspectRatio) == 0
-				|| ProjectManager.getInstance().getCurrentProject().isCastProject()) {
-			resizePossible = false;
-			stageListener.maxViewPortWidth = ScreenValues.SCREEN_WIDTH;
-			stageListener.maxViewPortHeight = ScreenValues.SCREEN_HEIGHT;
-			return;
-		}
-
-		resizePossible = true;
-
-		float ratioHeight = (float) ScreenValues.SCREEN_HEIGHT / (float) virtualScreenHeight;
-		float ratioWidth = (float) ScreenValues.SCREEN_WIDTH / (float) virtualScreenWidth;
-
-		if (aspectRatio < screenAspectRatio) {
-			float scale = ratioHeight / ratioWidth;
-			stageListener.maxViewPortWidth = (int) (ScreenValues.SCREEN_WIDTH * scale);
-			stageListener.maxViewPortX = (int) ((ScreenValues.SCREEN_WIDTH - stageListener.maxViewPortWidth) / 2f);
-			stageListener.maxViewPortHeight = ScreenValues.SCREEN_HEIGHT;
-		} else if (aspectRatio > screenAspectRatio) {
-			float scale = ratioWidth / ratioHeight;
-			stageListener.maxViewPortHeight = (int) (ScreenValues.SCREEN_HEIGHT * scale);
-			stageListener.maxViewPortY = (int) ((ScreenValues.SCREEN_HEIGHT - stageListener.maxViewPortHeight) / 2f);
-			stageListener.maxViewPortWidth = ScreenValues.SCREEN_WIDTH;
-		}
-	}
-
-	private boolean isInPortraitMode() {
-		return ScreenValues.SCREEN_WIDTH < ScreenValues.SCREEN_HEIGHT;
-	}
-
-	private boolean isInLandscapeMode() {
-		return !isInPortraitMode();
-	}
-
-	private void swapWidthAndHeigth() {
-		int tmp = ScreenValues.SCREEN_HEIGHT;
-		ScreenValues.SCREEN_HEIGHT = ScreenValues.SCREEN_WIDTH;
-		ScreenValues.SCREEN_WIDTH = tmp;
 	}
 
 	@Override

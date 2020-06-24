@@ -28,6 +28,7 @@ import android.graphics.BitmapFactory;
 
 import org.catrobat.catroid.R;
 import org.catrobat.catroid.common.LookData;
+import org.catrobat.catroid.common.ScreenValues;
 import org.catrobat.catroid.content.Project;
 import org.catrobat.catroid.content.Scene;
 import org.catrobat.catroid.content.Script;
@@ -64,8 +65,6 @@ import static org.catrobat.catroid.common.BrickValues.JUMPING_SUMO_MOVE_BRICK_DE
 import static org.catrobat.catroid.common.BrickValues.JUMPING_SUMO_MOVE_BRICK_DEFAULT_TIME_MILLISECONDS;
 import static org.catrobat.catroid.common.Constants.DEFAULT_IMAGE_EXTENSION;
 import static org.catrobat.catroid.common.Constants.IMAGE_DIRECTORY_NAME;
-import static org.catrobat.catroid.common.ScreenValues.SCREEN_HEIGHT;
-import static org.catrobat.catroid.common.ScreenValues.SCREEN_WIDTH;
 import static org.catrobat.catroid.content.bricks.JumpingSumoAnimationsBrick.Animation;
 
 public class JumpingSumoProjectCreator extends ProjectCreator {
@@ -113,6 +112,8 @@ public class JumpingSumoProjectCreator extends ProjectCreator {
 		options.inJustDecodeBounds = true;
 		BitmapFactory.decodeResource(context.getResources(), R.drawable.drone_project_background, options);
 
+		int SCREEN_WIDTH = ScreenValues.Companion.getSCREEN_WIDTH();
+		int SCREEN_HEIGHT = ScreenValues.Companion.getSCREEN_HEIGHT();
 		backgroundImageScaleFactor = ImageEditing.calculateScaleFactor(
 				options.outWidth,
 				options.outHeight,

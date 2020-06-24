@@ -51,8 +51,8 @@ public class SlowFaceDetectorCameraTest {
 	@Before
 	public void setUp() throws Exception {
 		CameraManager.makeInstance();
-		ScreenValues.SCREEN_WIDTH = 720;
-		ScreenValues.SCREEN_HEIGHT = 1080;
+		ScreenValues.Companion.setSCREEN_WIDTH(720);
+		ScreenValues.Companion.setSCREEN_HEIGHT(1080);
 		ProjectManager.getInstance().setCurrentProject(new Project());
 	}
 

@@ -165,7 +165,7 @@ public class NextLookActionTest {
 		ProjectManager.getInstance().setCurrentProject(project);
 		ProjectManager.getInstance().setCurrentSprite(firstSprite);
 
-		ScreenValues.SCREEN_HEIGHT = 200;
-		ScreenValues.SCREEN_WIDTH = 200;
+		ScreenValues.Companion.setSCREEN_HEIGHT(200);
+		ScreenValues.Companion.setSCREEN_WIDTH(200);
 	}
 }

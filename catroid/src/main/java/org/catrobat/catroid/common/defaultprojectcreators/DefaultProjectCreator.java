@@ -28,6 +28,7 @@ import android.graphics.BitmapFactory;
 
 import org.catrobat.catroid.R;
 import org.catrobat.catroid.common.LookData;
+import org.catrobat.catroid.common.ScreenValues;
 import org.catrobat.catroid.common.SoundInfo;
 import org.catrobat.catroid.content.Project;
 import org.catrobat.catroid.content.Scene;
@@ -57,8 +58,6 @@ import static org.catrobat.catroid.common.Constants.DEFAULT_IMAGE_EXTENSION;
 import static org.catrobat.catroid.common.Constants.DEFAULT_SOUND_EXTENSION;
 import static org.catrobat.catroid.common.Constants.IMAGE_DIRECTORY_NAME;
 import static org.catrobat.catroid.common.Constants.SOUND_DIRECTORY_NAME;
-import static org.catrobat.catroid.common.ScreenValues.SCREEN_HEIGHT;
-import static org.catrobat.catroid.common.ScreenValues.SCREEN_WIDTH;
 import static org.catrobat.catroid.formulaeditor.FormulaElement.ElementType.FUNCTION;
 import static org.catrobat.catroid.formulaeditor.FormulaElement.ElementType.NUMBER;
 import static org.catrobat.catroid.formulaeditor.FormulaElement.ElementType.OPERATOR;
@@ -104,6 +103,8 @@ public class DefaultProjectCreator extends ProjectCreator {
 		options.inJustDecodeBounds = true;
 		BitmapFactory.decodeResource(context.getResources(), backgroundDrawableId, options);
 
+		int SCREEN_WIDTH = ScreenValues.Companion.getSCREEN_WIDTH();
+		int SCREEN_HEIGHT = ScreenValues.Companion.getSCREEN_HEIGHT();
 		backgroundImageScaleFactor = ImageEditing.calculateScaleFactor(
 				options.outWidth,
 				options.outHeight,

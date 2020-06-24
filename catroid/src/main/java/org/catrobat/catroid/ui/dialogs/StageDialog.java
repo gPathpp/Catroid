@@ -29,7 +29,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager.LayoutParams;
 import android.widget.Button;
-import android.widget.ImageButton;
 
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
@@ -66,26 +65,27 @@ public class StageDialog extends Dialog implements View.OnClickListener {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.dialog_stage);
-		getWindow().getAttributes();
-
-		getWindow().getAttributes();
+		if (getWindow() == null) {
+			Log.i(TAG, "getWindow returned null");
+			dismiss();
+			return;
+		}
 
 		int width = LayoutParams.MATCH_PARENT;
 		int height = LayoutParams.WRAP_CONTENT;
 
 		getWindow().setLayout(width, height);
-
 		getWindow().setBackgroundDrawableResource(R.color.transparent);
 
-		((Button) findViewById(R.id.stage_dialog_button_back)).setOnClickListener(this);
-		((Button) findViewById(R.id.stage_dialog_button_continue)).setOnClickListener(this);
-		((Button) findViewById(R.id.stage_dialog_button_restart)).setOnClickListener(this);
-		((Button) findViewById(R.id.stage_dialog_button_toggle_axes)).setOnClickListener(this);
-		((Button) findViewById(R.id.stage_dialog_button_screenshot)).setOnClickListener(this);
-		if (stageActivity.getResizePossible()) {
-			((ImageButton) findViewById(R.id.stage_dialog_button_maximize)).setOnClickListener(this);
+		findViewById(R.id.stage_dialog_button_back).setOnClickListener(this);
+		findViewById(R.id.stage_dialog_button_continue).setOnClickListener(this);
+		findViewById(R.id.stage_dialog_button_restart).setOnClickListener(this);
+		findViewById(R.id.stage_dialog_button_toggle_axes).setOnClickListener(this);
+		findViewById(R.id.stage_dialog_button_screenshot).setOnClickListener(this);
+		if (stageListener.getScreenValues().getResizePossible()) {
+			findViewById(R.id.stage_dialog_button_maximize).setOnClickListener(this);
 		} else {
-			((ImageButton) findViewById(R.id.stage_dialog_button_maximize)).setVisibility(View.GONE);
+			findViewById(R.id.stage_dialog_button_maximize).setVisibility(View.GONE);
 		}
 	}
 

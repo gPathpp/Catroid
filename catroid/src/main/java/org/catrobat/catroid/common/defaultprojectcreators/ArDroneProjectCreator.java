@@ -62,8 +62,7 @@ import java.io.IOException;
 
 import static org.catrobat.catroid.common.Constants.DEFAULT_IMAGE_EXTENSION;
 import static org.catrobat.catroid.common.Constants.IMAGE_DIRECTORY_NAME;
-import static org.catrobat.catroid.common.ScreenValues.SCREEN_HEIGHT;
-import static org.catrobat.catroid.common.ScreenValues.SCREEN_WIDTH;
+import static org.catrobat.catroid.common.ScreenValues.Companion;
 
 public class ArDroneProjectCreator extends ProjectCreator {
 
@@ -94,8 +93,8 @@ public class ArDroneProjectCreator extends ProjectCreator {
 		backgroundImageScaleFactor = ImageEditing.calculateScaleFactor(
 				options.outWidth,
 				options.outHeight,
-				SCREEN_WIDTH,
-				SCREEN_HEIGHT);
+				Companion.getSCREEN_WIDTH(),
+				Companion.getSCREEN_HEIGHT());
 
 		Scene scene = project.getDefaultScene();
 

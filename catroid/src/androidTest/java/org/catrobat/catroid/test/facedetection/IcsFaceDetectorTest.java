@@ -85,8 +85,8 @@ public class IcsFaceDetectorTest {
 	@Before
 	public void setUp() throws Exception {
 		CameraManager.makeInstance();
-		ScreenValues.SCREEN_WIDTH = 720;
-		ScreenValues.SCREEN_HEIGHT = 1080;
+		ScreenValues.Companion.setSCREEN_WIDTH(720);
+		ScreenValues.Companion.setSCREEN_HEIGHT(1080);
 		camera = Camera.open();
 		detector = new IcsFaceDetector();
 	}
@@ -147,11 +147,12 @@ public class IcsFaceDetectorTest {
 		float expectedSize = (FACE_RIGHT - FACE_LEFT) * 100 * 2 / FACE_RECT_SIZE;
 		assertEquals(expectedSize, capturedEvents.get(2).values[0]);
 
-		float expectedXPosition = Math.abs((FACE_TOP + (FACE_BOTTOM - FACE_TOP) / 2) * ScreenValues.SCREEN_WIDTH
+		float expectedXPosition = Math.abs((FACE_TOP + (FACE_BOTTOM - FACE_TOP) / 2) * ScreenValues.Companion.getSCREEN_WIDTH()
 				/ FACE_RECT_SIZE);
 		assertEquals(expectedXPosition, Math.abs(capturedEvents.get(0).values[0]));
 
-		float expectedYPosition = Math.abs((FACE_LEFT + (FACE_RIGHT - FACE_LEFT) / 2) * ScreenValues.SCREEN_HEIGHT
+		float expectedYPosition =
+				Math.abs((FACE_LEFT + (FACE_RIGHT - FACE_LEFT) / 2) * ScreenValues.Companion.getSCREEN_HEIGHT()
 				/ FACE_RECT_SIZE);
 		assertEquals(expectedYPosition, Math.abs(capturedEvents.get(1).values[0]));
 

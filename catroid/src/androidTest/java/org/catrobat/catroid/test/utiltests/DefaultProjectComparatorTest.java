@@ -63,11 +63,11 @@ public class DefaultProjectComparatorTest {
 
 	@Before
 	public void setUp() throws IOException {
-		screenWidthBuffer = ScreenValues.SCREEN_WIDTH;
-		screenHeightBuffer = ScreenValues.SCREEN_HEIGHT;
+		screenWidthBuffer = ScreenValues.Companion.getSCREEN_WIDTH();
+		screenHeightBuffer = ScreenValues.Companion.getSCREEN_HEIGHT();
 
-		ScreenValues.SCREEN_WIDTH = 480;
-		ScreenValues.SCREEN_HEIGHT = 800;
+		ScreenValues.Companion.setSCREEN_WIDTH(480);
+		ScreenValues.Companion.setSCREEN_HEIGHT(800);
 
 		if (projectDir.isDirectory()) {
 			StorageOperations.deleteDir(projectDir);
@@ -79,8 +79,8 @@ public class DefaultProjectComparatorTest {
 
 	@After
 	public void tearDown() throws Exception {
-		ScreenValues.SCREEN_WIDTH = screenWidthBuffer;
-		ScreenValues.SCREEN_HEIGHT = screenHeightBuffer;
+		ScreenValues.Companion.setSCREEN_WIDTH(screenWidthBuffer);
+		ScreenValues.Companion.setSCREEN_HEIGHT(screenHeightBuffer);
 
 		if (projectDir.isDirectory()) {
 			StorageOperations.deleteDir(projectDir);

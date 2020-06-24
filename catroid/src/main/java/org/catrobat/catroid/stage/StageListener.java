@@ -93,8 +93,6 @@ import androidx.annotation.VisibleForTesting;
 import kotlinx.coroutines.GlobalScope;
 
 import static org.catrobat.catroid.common.Constants.DEFAULT_IMAGE_EXTENSION;
-import static org.catrobat.catroid.common.ScreenValues.SCREEN_HEIGHT;
-import static org.catrobat.catroid.common.ScreenValues.SCREEN_WIDTH;
 
 public class StageListener implements ApplicationListener {
 
@@ -152,10 +150,7 @@ public class StageListener implements ApplicationListener {
 
 	private StageDialog stageDialog;
 
-	int maxViewPortX = 0;
-	int maxViewPortY = 0;
-	int maxViewPortHeight = 0;
-	int maxViewPortWidth = 0;
+	public ScreenValues screenValues;
 
 	public boolean axesOn = false;
 	private static final Color AXIS_COLOR = new Color(0xff000cff);
@@ -204,7 +199,7 @@ public class StageListener implements ApplicationListener {
 		embroideryPatternManager = new DSTPatternManager();
 		initActors(sprites);
 
-		passepartout = new Passepartout(SCREEN_WIDTH, SCREEN_HEIGHT, maxViewPortWidth, maxViewPortHeight, virtualWidth, virtualHeight);
+		passepartout = new Passepartout(screenValues, virtualWidth, virtualHeight);
 		stage.addActor(passepartout);
 
 		axes = new Texture(Gdx.files.internal("stage/red_pixel.bmp"));
@@ -685,6 +680,10 @@ public class StageListener implements ApplicationListener {
 		}
 	}
 
+	public ScreenValues getScreenValues() {
+		return screenValues;
+	}
+
 	public byte[] getPixels(int x, int y, int width, int height) {
 		testX = x;
 		testY = y;
@@ -719,8 +718,8 @@ public class StageListener implements ApplicationListener {
 	private void initScreenMode() {
 		switch (project.getScreenMode()) {
 			case STRETCH:
-				screenshotWidth = ScreenValues.getScreenWidthForProject(project);
-				screenshotHeight = ScreenValues.getScreenHeightForProject(project);
+				screenshotWidth = screenValues.getScreenWidthForProject(project);
+				screenshotHeight = screenValues.getScreenHeightForProject(project);
 				screenshotX = 0;
 				screenshotY = 0;
 				viewPort = new ScalingViewport(Scaling.stretch, virtualWidth, virtualHeight, camera);
@@ -729,17 +728,17 @@ public class StageListener implements ApplicationListener {
 			case MAXIMIZE:
 				float yScale = 1.0f;
 				float xScale = 1.0f;
-				if (screenshotWidth != maxViewPortWidth && maxViewPortWidth > 0) {
-					xScale = screenshotWidth / (float) maxViewPortWidth;
+				if (screenshotWidth != screenValues.getMaxViewPortWidth() && screenValues.getMaxViewPortWidth() > 0) {
+					xScale = screenshotWidth / (float) screenValues.getMaxViewPortWidth();
 				}
-				if (screenshotHeight != maxViewPortHeight && maxViewPortHeight > 0) {
-					yScale = screenshotHeight / (float) maxViewPortHeight;
+				if (screenshotHeight != screenValues.getMaxViewPortHeight() && screenValues.getMaxViewPortHeight() > 0) {
+					yScale = screenshotHeight / (float) screenValues.getMaxViewPortHeight();
 				}
 
-				screenshotWidth = maxViewPortWidth;
-				screenshotHeight = maxViewPortHeight;
-				screenshotX = maxViewPortX;
-				screenshotY = maxViewPortY;
+				screenshotWidth = screenValues.getMaxViewPortWidth();
+				screenshotHeight = screenValues.getMaxViewPortHeight();
+				screenshotX = screenValues.getMaxViewPortX();
+				screenshotY = screenValues.getMaxViewPortY();
 
 				viewPort = new ExtendViewport(virtualWidth, virtualHeight, camera);
 				shapeRenderer.scale(xScale, yScale, 1.0f);
@@ -747,7 +746,8 @@ public class StageListener implements ApplicationListener {
 			default:
 				break;
 		}
-		viewPort.update(SCREEN_WIDTH, SCREEN_HEIGHT, false);
+		viewPort.update(ScreenValues.Companion.getSCREEN_WIDTH(), ScreenValues.Companion.getSCREEN_HEIGHT(),
+				false);
 		camera.position.set(0, 0, 0);
 		camera.update();
 		shapeRenderer.updateMatrices();

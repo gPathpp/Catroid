@@ -81,7 +81,7 @@ public class IfOnEdgeBouncePhysicsActionTest {
 		PhysicsObject physicsObject = physicsWorld.getPhysicsObject(sprite);
 		physicsObject.setType(PhysicsObject.Type.DYNAMIC);
 
-		float setYValue = -ScreenValues.SCREEN_HEIGHT / 2 + 1; // So that nearly the half of the rectangle should be outside of the screen
+		float setYValue = -ScreenValues.Companion.getSCREEN_HEIGHT() / 2 + 1; // So that nearly the half of the rectangle should be outside of the screen
 		sprite.look.setYInUserInterfaceDimensionUnit(setYValue);
 		float setVelocityYValue = -(IfOnEdgeBouncePhysicsAction.THRESHOLD_VELOCITY_TO_ACTIVATE_BOUNCE - 1.0f);
 		physicsObject.setVelocity(physicsObject.getVelocity().x, setVelocityYValue);
@@ -106,7 +106,7 @@ public class IfOnEdgeBouncePhysicsActionTest {
 		PhysicsObject physicsObject = physicsWorld.getPhysicsObject(sprite);
 		physicsObject.setType(PhysicsObject.Type.DYNAMIC);
 
-		float setYValue = ScreenValues.SCREEN_HEIGHT / 2 - 1; // So that nearly the half of the rectangle should be outside of the screen
+		float setYValue = ScreenValues.Companion.getSCREEN_HEIGHT() / 2 - 1; // So that nearly the half of the rectangle should be outside of the screen
 		sprite.look.setYInUserInterfaceDimensionUnit(setYValue);
 		float setVelocityYValue = IfOnEdgeBouncePhysicsAction.THRESHOLD_VELOCITY_TO_ACTIVATE_BOUNCE + 0.5f;
 		physicsObject.setVelocity(physicsObject.getVelocity().x, setVelocityYValue);
@@ -134,9 +134,9 @@ public class IfOnEdgeBouncePhysicsActionTest {
 		PhysicsObject physicsObject = physicsWorld.getPhysicsObject(sprite);
 		physicsObject.setType(PhysicsObject.Type.DYNAMIC);
 
-		float setXValue = ScreenValues.SCREEN_WIDTH / 2 - sprite.look.getLookData().getPixmap().getWidth() / 4;
+		float setXValue = ScreenValues.Companion.getSCREEN_WIDTH() / 2 - sprite.look.getLookData().getPixmap().getWidth() / 4;
 		sprite.look.setXInUserInterfaceDimensionUnit(setXValue);
-		float setYValue = ScreenValues.SCREEN_HEIGHT / 2 - sprite.look.getLookData().getPixmap().getHeight() / 4;
+		float setYValue = ScreenValues.Companion.getSCREEN_HEIGHT() / 2 - sprite.look.getLookData().getPixmap().getHeight() / 4;
 		sprite.look.setYInUserInterfaceDimensionUnit(setYValue);
 
 		float setVelocityXValue = 400.0f;
@@ -198,9 +198,9 @@ public class IfOnEdgeBouncePhysicsActionTest {
 		PhysicsObject physicsObject = physicsWorld.getPhysicsObject(sprite);
 		physicsObject.setType(PhysicsObject.Type.DYNAMIC);
 
-		float setXValue = ScreenValues.SCREEN_WIDTH / 2 - sprite.look.getLookData().getPixmap().getWidth() / 4;
+		float setXValue = ScreenValues.Companion.getSCREEN_WIDTH() / 2 - sprite.look.getLookData().getPixmap().getWidth() / 4;
 		sprite.look.setXInUserInterfaceDimensionUnit(setXValue);
-		float setYValue = ScreenValues.SCREEN_HEIGHT / 2 - sprite.look.getLookData().getPixmap().getHeight() / 4;
+		float setYValue = ScreenValues.Companion.getSCREEN_HEIGHT() / 2 - sprite.look.getLookData().getPixmap().getHeight() / 4;
 		sprite.look.setYInUserInterfaceDimensionUnit(setYValue);
 
 		assertEquals(setXValue, sprite.look.getXInUserInterfaceDimensionUnit());

@@ -69,12 +69,13 @@ public class DroneVideoLookData extends LookData {
 	@Override
 	public Pixmap getPixmap() {
 		// BUG: Height() should be 1280, but it is 1184, so we need an scaling factor of 1.081081
-		int virtualScreenHeight = (int) Math.round(1.081081 * ScreenValues.SCREEN_HEIGHT);
+		int virtualScreenHeight =
+				(int) Math.round(1.081081 * ScreenValues.Companion.getSCREEN_HEIGHT());
 
-		defaultVideoTextureSize = new int[] {virtualScreenHeight, ScreenValues.SCREEN_WIDTH};
+		defaultVideoTextureSize = new int[] {virtualScreenHeight, ScreenValues.Companion.getSCREEN_WIDTH()};
 
 		if (pixmap == null) {
-			pixmap = new Pixmap(virtualScreenHeight, ScreenValues.SCREEN_WIDTH, Pixmap.Format.RGB888);
+			pixmap = new Pixmap(virtualScreenHeight, ScreenValues.Companion.getSCREEN_WIDTH(), Pixmap.Format.RGB888);
 			pixmap.setColor(Color.BLUE);
 			pixmap.fill();
 			pixmap.setBlending(Pixmap.Blending.None);

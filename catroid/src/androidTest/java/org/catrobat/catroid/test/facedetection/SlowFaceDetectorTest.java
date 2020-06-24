@@ -78,8 +78,8 @@ public class SlowFaceDetectorTest {
 	@Before
 	public void setUp() throws Exception {
 		CameraManager.makeInstance();
-		ScreenValues.SCREEN_WIDTH = 720;
-		ScreenValues.SCREEN_HEIGHT = 1080;
+		ScreenValues.Companion.setSCREEN_WIDTH(720);
+		ScreenValues.Companion.setSCREEN_HEIGHT(1080);
 		detector = new SlowFaceDetector();
 	}
 
@@ -108,13 +108,15 @@ public class SlowFaceDetectorTest {
 		assertEquals(expectedSize, capturedEvents.get(2).values[0]);
 		assertEquals(Sensors.FACE_SIZE, capturedEvents.get(2).sensor);
 
-		float expectedXPosition = (int) (centerPoint.x / DETECTION_WIDTH * (-1) * ScreenValues.SCREEN_WIDTH)
-				+ ScreenValues.SCREEN_WIDTH / 2;
+		float expectedXPosition =
+				(int) (centerPoint.x / DETECTION_WIDTH * (-1) * ScreenValues.Companion.getSCREEN_WIDTH())
+				+ ScreenValues.Companion.getSCREEN_WIDTH() / 2;
 		assertEquals(expectedXPosition, capturedEvents.get(0).values[0]);
 		assertEquals(Sensors.FACE_X_POSITION, capturedEvents.get(0).sensor);
 
-		float expectedYPosition = (int) (centerPoint.y / DETECTION_HEIGHT * (-1) * ScreenValues.SCREEN_HEIGHT)
-				+ ScreenValues.SCREEN_HEIGHT / 2;
+		float expectedYPosition =
+				(int) (centerPoint.y / DETECTION_HEIGHT * (-1) * ScreenValues.Companion.getSCREEN_HEIGHT())
+				+ ScreenValues.Companion.getSCREEN_HEIGHT() / 2;
 		assertEquals(expectedYPosition, capturedEvents.get(1).values[0]);
 		assertEquals(Sensors.FACE_Y_POSITION, capturedEvents.get(1).sensor);
 

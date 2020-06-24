@@ -281,7 +281,7 @@ public final class CameraManager implements DeviceCameraControl, Camera.PreviewC
 			int previewHeight = 0;
 			int previewWidth = 0;
 			for (int i = 0; i < previewSizes.size()
-					&& previewSizes.get(i).height <= ScreenValues.SCREEN_HEIGHT; i++) {
+					&& previewSizes.get(i).height <= ScreenValues.Companion.getSCREEN_HEIGHT(); i++) {
 				if (previewSizes.get(i).height > previewHeight) {
 					previewHeight = previewSizes.get(i).height;
 					previewWidth = previewSizes.get(i).width;

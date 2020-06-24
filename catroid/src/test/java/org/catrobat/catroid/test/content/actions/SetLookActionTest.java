@@ -63,8 +63,8 @@ public class SetLookActionTest {
 		bitmapOptions.inJustDecodeBounds = true;
 		BitmapFactory.decodeFile(testImage.getAbsolutePath(), bitmapOptions);
 
-		ScreenValues.SCREEN_HEIGHT = 200;
-		ScreenValues.SCREEN_WIDTH = 200;
+		ScreenValues.Companion.setSCREEN_HEIGHT(200);
+		ScreenValues.Companion.setSCREEN_WIDTH(200);
 
 		sprite = new SingleSprite("new sprite");
 		project.getDefaultScene().addSprite(sprite);

@@ -38,6 +38,7 @@ import org.catrobat.catroid.bluetooth.base.BluetoothDeviceService;
 import org.catrobat.catroid.camera.CameraManager;
 import org.catrobat.catroid.cast.CastManager;
 import org.catrobat.catroid.common.CatroidService;
+import org.catrobat.catroid.common.ScreenValues;
 import org.catrobat.catroid.common.ServiceProvider;
 import org.catrobat.catroid.content.Scene;
 import org.catrobat.catroid.content.Sprite;
@@ -90,9 +91,9 @@ public final class StageLifeCycleController {
 
 		stageActivity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-		stageActivity.stageListener = new StageListener();
-		stageActivity.stageDialog = new StageDialog(stageActivity, stageActivity.stageListener, R.style.StageDialog);
-		stageActivity.calculateScreenSizes();
+		StageActivity.stageListener = new StageListener();
+		stageActivity.stageDialog = new StageDialog(stageActivity, StageActivity.stageListener, R.style.StageDialog);
+		StageActivity.stageListener.screenValues = new ScreenValues(stageActivity, ProjectManager.getInstance().getCurrentProject());
 
 		stageActivity.configuration = new AndroidApplicationConfiguration();
 		stageActivity.configuration.r = stageActivity.configuration.g = stageActivity.configuration.b = stageActivity.configuration.a = 8;
@@ -101,9 +102,9 @@ public final class StageLifeCycleController {
 			stageActivity.setContentView(R.layout.activity_stage_gamepad);
 			CastManager.getInstance().initializeGamepadActivity(stageActivity);
 			CastManager.getInstance()
-					.addStageViewToLayout((GLSurfaceView20) stageActivity.initializeForView(stageActivity.stageListener, stageActivity.configuration));
+					.addStageViewToLayout((GLSurfaceView20) stageActivity.initializeForView(StageActivity.stageListener, stageActivity.configuration));
 		} else {
-			stageActivity.initialize(stageActivity.stageListener, stageActivity.configuration);
+			stageActivity.initialize(StageActivity.stageListener, stageActivity.configuration);
 		}
 
 		//CATROID-105 - TODO: does this make any difference? probably necessary for cast:
